@@ -21,8 +21,8 @@ const Login = ({ setUser }) => {
   const handleGoogleLogin = async () => {
     account.createOAuth2Session(
       "google",
-      "http://localhost:5173", // Success redirect URL
-      "http://localhost:5173/login" // Failure redirect URL
+      "https://usecringe.vercel.app", // Success redirect URL
+      "https://usecringe.vercel.app/login" // Failure redirect URL
     );
   };
 
