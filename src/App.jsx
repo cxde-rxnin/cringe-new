@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { account, databases } from "./appwrite";
+import { Query } from 'appwrite';
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate, useNavigate } from 'react-router-dom';
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import Sidebar from "./components/Sidebar";
@@ -36,10 +37,10 @@ function App() {
   }, []);
 
   const storeUserProfile = (user) => {
-    if (!user) return;
+    if (!user || !user.email) return;
 
     // Check if user profile already exists
-    databases.listDocuments('your_collection_id', [
+    databases.listDocuments('675756b9000b3db85eda', [
       Query.equal('email', user.email)
     ])
     .then((response) => {
