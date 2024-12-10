@@ -6,7 +6,7 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
-import { Bars3Icon } from "@heroicons/react/24/outline";
+import { Bars3Icon, ArrowLeftIcon } from "@heroicons/react/24/outline"; // Import the back arrow icon
 import Sidebar from "./components/Sidebar";
 import HomePage from "./pages/HomePage";
 import AnimeDetailsPage from "./pages/AnimeDetailsPage";
@@ -19,8 +19,8 @@ import WatchPartyPage from "./pages/WatchPartyPage";
 function Loader() {
   return (
     <div className="flex items-center justify-center h-screen bg-black">
-      <div className="text-white text-3xl font-bold animate-fadeup">
-        Welcome to Entertainment
+      <div className="text-white text-center text-5xl font-bold animate-fadeup">
+        Welcome to <br /> Entertainment
       </div>
     </div>
   );
@@ -31,6 +31,7 @@ function App() {
   const [loading, setLoading] = useState(true); // State for managing loader screen
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Simulate loading screen (e.g., fetching data or initializing)
   useEffect(() => {
@@ -39,19 +40,40 @@ function App() {
     }, 2000);
   }, []);
 
+  // Show loader if loading
   if (loading) {
-    return <Loader />; // Show loader while loading
+    return <Loader />;
   }
+
+  // Render back button conditionally
+  const showBackButton = location.pathname !== "/";
+
+  // Handle back button click and reset the search query
+  const handleBackButtonClick = () => {
+    setSearchQuery(""); // Clear the search query
+    navigate(-1); // Go back to the previous page
+  };
 
   return (
     <div className="min-h-screen">
       <header className="flex items-center justify-between p-4 text-white fixed z-2 w-full bg-neutral-950">
-        <button
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="lg:hidden p-2 rounded-lg"
-        >
-          <Bars3Icon className="w-6 h-6 text-white" />
-        </button>
+        {showBackButton && (
+          <button
+            onClick={handleBackButtonClick} // Clear search and navigate back
+            className="p-2 rounded-lg mr-2"
+          >
+            <ArrowLeftIcon className="w-6 h-6 text-white" />
+          </button>
+        )}
+
+        {!showBackButton && (
+          <button
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="lg:hidden p-2 rounded-lg"
+          >
+            <Bars3Icon className="w-6 h-6 text-white" />
+          </button>
+        )}
 
         <div className="flex-1 mx-4 max-w-xs ml-auto">
           <input
@@ -59,14 +81,19 @@ function App() {
             placeholder="Search for anime..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && navigate(`/search/${searchQuery}`)}
+            onKeyDown={(e) =>
+              e.key === "Enter" && navigate(`/search/${searchQuery}`)
+            }
             className="w-full px-4 py-2 rounded-lg bg-zinc-100/5 text-white/90 focus:outline-none"
           />
         </div>
       </header>
 
       <div className="flex">
-        {!(useLocation().pathname.includes("/anime/") || useLocation().pathname.includes("/search/")) && (
+        {!(
+          location.pathname.includes("/anime/") ||
+          location.pathname.includes("/search/")
+        ) && (
           <Sidebar
             isOpen={isSidebarOpen}
             closeSidebar={() => setIsSidebarOpen(false)}
@@ -89,6 +116,3 @@ function App() {
 }
 
 export default App;
-
-
-
