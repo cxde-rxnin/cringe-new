@@ -19,19 +19,13 @@ const Login = ({ setUser }) => {
       });
   }, [setUser]);
 
-  const handleGoogleLogin = async () => {
-    try {
-      // Initiate Google OAuth2 login
-      await account.createOAuth2Session(
+  const handleGoogleLogin () {
+    account.create0Auth2Session(
         "google",
         "https://usecringe.vercel.app/", // Success redirect URL
-        "https://usecringe.vercel.app/login" // Failure redirect URL
-      );
-      console.log("OAuth2 session started");
-    } catch (error) {
-      console.error("Error during Google login:", error.message); // Debug log
-    }
-  };
+        "https://usecringe.vercel.app/login"
+    )
+  }
 
   return (
     <div className="flex items-center justify-center h-[90vh] text-white">
