@@ -1,33 +1,36 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { account } from "../appwrite";  // Ensure your Appwrite config is correct
+import { account } from "../appwrite";
 
 const Login = ({ setUser }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if the user is already logged in
-    account
-      .get()
-      .then((user) => {
-        setUser(user); // Store user info in the state
-        navigate("/"); // Redirect to home if user is authenticated
-      })
-      .catch(() => {
-        // No session or error
-      });
+    const checkSession = async () => {
+      try {
+        const user = await account.get();
+        console.log("User session found:", user);
+        setUser(user);
+        navigate("/");
+      } catch (error) {
+        console.log("No active session:", error.message);
+      }
+    };
+
+    // Check session immediately on component mount
+    checkSession();
   }, [navigate, setUser]);
 
   const handleGoogleLogin = async () => {
     try {
-      // Initiate Google OAuth2 login
+      // Create OAuth2 session with full URLs
       await account.createOAuth2Session(
-        "google",
-        "https://usecringe.vercel.app/", // Success URL
-        "https://usecringe.vercel.app/login" // Failure URL
+        "google", 
+        `${window.location.origin}/`, // Success redirect (current origin)
+        `${window.location.origin}/login` // Failure redirect (current origin)
       );
     } catch (error) {
-      console.error("Error during Google login:", error.message); // Debug log
+      console.error("Error during Google login:", error.message);
     }
   };
 
