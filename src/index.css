@@ -6,3 +6,18 @@ body {
   background-color: #0a0a0a;
   color: white;
 }
+
+@keyframes fadeup {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeup {
+  animation: fadeup 1.5s ease-out forwards;
+}

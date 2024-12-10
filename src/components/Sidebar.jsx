@@ -6,20 +6,11 @@ import {
   FolderIcon,
   VideoCameraIcon,
 } from "@heroicons/react/24/outline";
-import { account } from "../appwrite";
 
 const Sidebar = ({ isOpen, closeSidebar, setUser }) => {
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    try {
-      await account.deleteSession("current");
-      setUser(null);
-      navigate("/login");
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
-  };
+
 
   return (
     <>
@@ -97,14 +88,6 @@ const Sidebar = ({ isOpen, closeSidebar, setUser }) => {
           </li>
         </ul>
 
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-full p-4">
-          <button
-            onClick={handleLogout}
-            className="w-full bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
-          >
-            Logout
-          </button>
-        </div>
       </div>
     </>
   );
