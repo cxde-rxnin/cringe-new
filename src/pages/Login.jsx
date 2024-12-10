@@ -12,12 +12,12 @@ const Login = ({ setUser }) => {
       .then((user) => {
         console.log("User session found:", user); // Debug log
         setUser(user); // Set user in state
-        navigate("/"); // Redirect to home
+        // Appwrite should handle redirect, no need for manual navigate here
       })
       .catch((error) => {
         console.log("No session or error:", error.message); // Debug log
       });
-  }, [navigate, setUser]);
+  }, [setUser]);
 
   const handleGoogleLogin = async () => {
     try {
