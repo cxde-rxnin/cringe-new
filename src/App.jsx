@@ -19,7 +19,7 @@ import WatchPartyPage from "./pages/WatchPartyPage";
 function Loader() {
   return (
     <div className="flex items-center justify-center h-screen bg-black">
-      <div className="text-white text-center text-5xl font-bold animate-fadeup">
+      <div className="text-white text-center text-2xl lg:text-5xl font-extrabold animate-fadeup">
         Welcome to <br /> Entertainment
       </div>
     </div>
