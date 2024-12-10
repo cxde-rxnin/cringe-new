@@ -5,36 +5,31 @@ import { account } from "../appwrite";
 const Login = ({ setUser }) => {
   const navigate = useNavigate();
 
+  // Define the checkSession function
+  const checkSession = async () => {
+    try {
+      const user = await account.get();
+      console.log("User session found:", user);
+      setUser(user);
+      navigate("/"); // Redirect to the home page
+    } catch (error) {
+      console.log("No active session:", error.message);
+    }
+  };
+
+  // useEffect to check session when the component mounts
   useEffect(() => {
-    const checkSession = async () => {
-      try {
-        const session = await account.getSession('current'); // Check current session
-        if (session) {
-          const user = await account.get(); // Fetch the user info
-          console.log("User session found:", user);
-          setUser(user);
-          navigate("/");
-        }
-      } catch (error) {
-        console.log("No active session:", error.message);
-        navigate("/login");
-      }
-    };
-  
-    checkSession();
+    checkSession(); // Call checkSession here after it's defined
   }, [navigate, setUser]);
-  
 
-    // Check for active session immediately on component mount
-    checkSession();
-
+  // Handle Google login
   const handleGoogleLogin = async () => {
     try {
-      // Create OAuth2 session with full URLs for success and failure redirects
+      // Create OAuth2 session with full URLs
       await account.createOAuth2Session(
-        "google", 
-        `https://usecringe.vercel.app/`, // Success redirect URL
-        `https://usecringe.vercel.app/login` // Failure redirect URL
+        "google",
+        `${window.location.origin}/`, // Success redirect (current origin)
+        `${window.location.origin}/login` // Failure redirect (current origin)
       );
     } catch (error) {
       console.error("Error during Google login:", error.message);
