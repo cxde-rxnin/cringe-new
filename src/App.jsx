@@ -38,19 +38,31 @@ function App() {
   const storeUserProfile = (user) => {
     if (!user) return;
 
-    const userProfile = {
-      name: user.name || "No name",
-      email: user.email,
-      preferences: {},
-    };
+    // Check if user profile already exists
+    databases.listDocuments('your_collection_id', [
+      Query.equal('email', user.email)
+    ])
+    .then((response) => {
+      if (response.documents.length === 0) {
+        // Profile doesn't exist, create a new one
+        const userProfile = {
+          name: user.name || "No name",
+          email: user.email,
+          preferences: {},
+        };
 
-    databases.createDocument('your_collection_id', 'unique()', userProfile)
-      .then(response => {
-        console.log('User profile created:', response);
-      })
-      .catch(error => {
-        console.error('Error creating user profile:', error);
-      });
+        databases.createDocument('675756b9000b3db85eda', 'unique()', userProfile)
+          .then(response => {
+            console.log('User profile created:', response);
+          })
+          .catch(error => {
+            console.error('Error creating user profile:', error);
+          });
+      }
+    })
+    .catch(error => {
+      console.error('Error checking existing profile:', error);
+    });
   };
 
   if (loading) {

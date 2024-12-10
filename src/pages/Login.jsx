@@ -11,23 +11,23 @@ const Login = ({ setUser }) => {
         const user = await account.get();
         console.log("User session found:", user);
         setUser(user);
-        navigate("/");
+        navigate("/"); // Redirect to home if a user session exists
       } catch (error) {
         console.log("No active session:", error.message);
       }
     };
 
-    // Check session immediately on component mount
+    // Check for active session immediately on component mount
     checkSession();
   }, [navigate, setUser]);
 
   const handleGoogleLogin = async () => {
     try {
-      // Create OAuth2 session with full URLs
+      // Create OAuth2 session with full URLs for success and failure redirects
       await account.createOAuth2Session(
         "google", 
-        `${window.location.origin}/`, // Success redirect (current origin)
-        `${window.location.origin}/login` // Failure redirect (current origin)
+        `https://usecringe.vercel.app/`, // Success redirect URL
+        `https://usecringe.vercel.app/login` // Failure redirect URL
       );
     } catch (error) {
       console.error("Error during Google login:", error.message);
