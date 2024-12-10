@@ -8,18 +8,25 @@ const Login = ({ setUser }) => {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const user = await account.get();
-        console.log("User session found:", user);
-        setUser(user);
-        navigate("/"); // Redirect to home if a user session exists
+        const session = await account.getSession('current'); // Check current session
+        if (session) {
+          const user = await account.get(); // Fetch the user info
+          console.log("User session found:", user);
+          setUser(user);
+          navigate("/");
+        }
       } catch (error) {
         console.log("No active session:", error.message);
+        navigate("/login");
       }
     };
+  
+    checkSession();
+  }, [navigate, setUser]);
+  
 
     // Check for active session immediately on component mount
     checkSession();
-  }, [navigate, setUser]);
 
   const handleGoogleLogin = async () => {
     try {
