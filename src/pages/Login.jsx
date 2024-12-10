@@ -6,32 +6,40 @@ const Login = ({ setUser }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if the user is already logged in
+    // Check if a session exists and fetch user details
     account
       .get()
       .then((user) => {
-        setUser(user);
-        navigate("/"); // Redirect to home if user is authenticated
+        console.log("User session found:", user); // Debug log
+        setUser(user); // Set user in state
+        navigate("/"); // Redirect to home
       })
-      .catch(() => {
-        // No existing session
+      .catch((error) => {
+        console.log("No session or error:", error.message); // Debug log
       });
   }, [navigate, setUser]);
 
   const handleGoogleLogin = async () => {
-    account.createOAuth2Session(
-      "google",
-      "https://usecringe.vercel.app", // Success URL
-      "https://usecringe.vercel.app/login" // Failure URL
-    );
-    
+    try {
+      // Initiate Google OAuth2 login
+      await account.createOAuth2Session(
+        "google",
+        "https://usecringe.vercel.app/", // Success redirect URL
+        "https://usecringe.vercel.app/login" // Failure redirect URL
+      );
+      console.log("OAuth2 session started");
+    } catch (error) {
+      console.error("Error during Google login:", error.message); // Debug log
+    }
   };
 
   return (
     <div className="flex items-center justify-center h-[90vh] text-white">
       <div className="text-center bg-white/5 w-72 h-80 p-10 rounded-md shadow-lg">
         <h1 className="text-2xl font-bold pb-10">Welcome to Cringe!</h1>
-        <p className="text-sm font-regular -mt-5 mb-20">Log in to discover, stream, and enjoy the latest anime episodes.</p>
+        <p className="text-sm font-regular -mt-5 mb-20">
+          Log in to discover, stream, and enjoy the latest anime episodes.
+        </p>
         <button
           onClick={handleGoogleLogin}
           className="bg-green-500 px-6 py-2 rounded-lg text-black font-medium hover:bg-green-600"
