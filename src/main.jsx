@@ -1,17 +1,12 @@
-// index.jsx or main.jsx (entry file)
+
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css'; // Import global styles here
-import { BrowserRouter as Router } from 'react-router-dom'; // Import Router
-import App from './App'; // Import App component
-// import { Appwrite } from 'appwrite';
+import './index.css'; 
+import { BrowserRouter as Router } from 'react-router-dom'; 
+import App from './App'; 
 
 
-// const appwrite = new Appwrite();
-// appwrite.setEndpoint(appwriteConfig.endpoint).setProject(appwriteConfig.project);
-
-// Wrapping the App in the Router
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Router>

@@ -11,7 +11,9 @@ const SearchAnimePage = () => {
   useEffect(() => {
     const fetchSearchResults = async () => {
       try {
-        const response = await axios.get(`https://api.jikan.moe/v4/anime?q=${query}&page=1`);
+        const response = await axios.get(
+          `https://api.jikan.moe/v4/anime?q=${query}&page=1`
+        );
         setSearchResults(response.data.data);
         setLoading(false);
       } catch (error) {
@@ -30,11 +32,17 @@ const SearchAnimePage = () => {
   return (
     <div className="container mx-auto p-4 pt-20">
       <h2 className="text-2xl font-bold mb-4">Search Results for "{query}"</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-8 gap-y-10 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-10 gap-y-8 -ml-2 lg:gap-x-5 lg:gap-y-5 mb-8">
         {searchResults.length > 0 ? (
           searchResults.map((anime) => (
-            <div key={anime.mal_id} className="w-44 h-60 bg-white rounded-lg shadow-lg">
-              <Link to={`/anime/${anime.mal_id}`} className="block w-full h-full">
+            <div
+              key={anime.mal_id}
+              className="w-40 h-60 bg-white rounded-lg shadow-lg"
+            >
+              <Link
+                to={`/anime/${anime.mal_id}`}
+                className="block w-full h-full"
+              >
                 <img
                   src={anime.images.jpg.image_url}
                   alt={anime.title}
